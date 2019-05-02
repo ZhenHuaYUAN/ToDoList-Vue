@@ -43,7 +43,8 @@ if (isDev) {
       rules: [{
         test: /\.styl/,
         use: [
-          'style-loader',
+          // css热重载
+          'vue-style-loader',
           'css-loader',
           {
             loader: 'postcss-loader',
@@ -74,7 +75,7 @@ if (isDev) {
       rules: [{
         test: /\.styl/,
         use: ExtractPlugin.extract({
-          fallback: 'style-loader',
+          fallback: 'vue-style-loader',
           use: [
             'css-loader',
             {
