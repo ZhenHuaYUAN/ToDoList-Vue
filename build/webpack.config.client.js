@@ -5,7 +5,7 @@ const webpack = require('webpack')
 // 合并webpackconfig
 const merge = require('webpack-merge')
 // 非JavaScript代码的东西打包成一个单独的文件
-const ExtractPlugin = require("extract-text-webpack-plugin")
+const ExtractPlugin = require('extract-text-webpack-plugin')
 
 const baseConfig = require('./webpack.config.base')
 const isDev = process.env.NODE_ENV === 'development'
@@ -27,7 +27,7 @@ const devServer = {
   host: 'localhost',
   // webpack编译时显示到网页上
   overlay: {
-    errors: true,
+    errors: true
   },
   // 自动打开浏览器
   open: true,
