@@ -1,13 +1,13 @@
 // 把html写在JavaScript里
 import '../../assets/styles/footer.styl'
 export default {
-  data() {
+  data () {
     return {
-      author:'Panda'
+      author: 'Panda'
     }
   },
-  render() {
-    return(
+  render () {
+    return (
       <div id="footer">
         <span>Written by {this.author}</span>
       </div>

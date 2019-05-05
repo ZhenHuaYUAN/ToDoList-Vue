@@ -12,15 +12,13 @@
 import Header from './views/layout/header.vue'
 import Footer from './views/layout/footer.jsx'
 import Todo from './views/todo/todo.vue'
-
-console.log(Header.__docs)
 export default {
-  components:{
+  components: {
     Header,
     Footer,
     Todo
   }
-};
+}
 </script>
 
 <style lang="stylus" scoped>

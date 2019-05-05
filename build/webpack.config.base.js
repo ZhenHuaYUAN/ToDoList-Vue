@@ -12,7 +12,15 @@ const config = {
   },
   // 配置loader加载文件。可以加载前端会用到的所有资源。css、图片等
   module: {
-    rules: [{
+    rules: [
+      // 希望在vue-loader处理vue文件之前先进行一次代码检测。
+      {
+        test: /\.(vue|js|jsx)$/,
+        loader: 'eslint-loader',
+        exclude: /node_modules/,
+        enforce: 'pre'
+      },
+      {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: createVueLoaderOptions(isDev)
@@ -25,7 +33,7 @@ const config = {
         exclude: /node_modules/
       },
       {
-        // 图片文件大小小于1024,就会将图片转换为base64的代码
+      // 图片文件大小小于1024,就会将图片转换为base64的代码
         test: /\.(gif|jpg|png|jpeg|svg)$/,
         use: [{
           loader: 'url-loader',
@@ -36,6 +44,6 @@ const config = {
         }]
       }
     ]
-  },
+  }
 }
 module.exports = config

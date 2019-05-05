@@ -8,5 +8,5 @@ document.body.appendChild(root)
 
 // 把Vue的内容加载到root里
 new Vue({
-  render:(h)=>h(App)
+  render: (h) => h(App)
 }).$mount(root)

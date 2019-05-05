@@ -1,0 +1,13 @@
+# 规范编辑器配置
+
+# 读editorconfig读到这个文件就可以了。不用再向上寻找
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_size = 2
+indent_style = space
+insert_final_newline = true
+# 一行后面多了一个空格会自动去掉
+trim_trailing_whitespace = true
