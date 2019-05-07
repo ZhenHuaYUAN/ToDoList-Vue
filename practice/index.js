@@ -1,1 +1,1 @@
-import './directive/index'
+import './components/render'

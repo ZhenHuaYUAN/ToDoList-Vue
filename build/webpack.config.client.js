@@ -17,7 +17,9 @@ const defaultPlugins = [
       NODE_ENV: isDev ? '"development"' : '"production"'
     }
   }),
-  new HTMLPlugin()
+  new HTMLPlugin({
+    template: path.join(__dirname, 'template.html')
+  })
 ]
 
 let config
@@ -31,6 +33,10 @@ const devServer = {
   },
   // 自动打开浏览器
   open: true,
+  historyApiFallback: {
+    // 这是在dist中的html，是HTMLPlugin生成的index.html的位置
+    index: '/index.html'
+  },
   // 改了一个组件的代码，只改变组件的内容.包括下面的plugin
   hot: true
 }

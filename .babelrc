@@ -1,8 +1,11 @@
 {
   "presets":[
-    "env"
+    "env",
+    // es7、es8、未定稿的语法都可以使用
+    "stage-1"
   ],
   "plugins": [
-    "transform-vue-jsx"
+    "transform-vue-jsx",
+    "syntax-dynamic-import"
   ]
 }

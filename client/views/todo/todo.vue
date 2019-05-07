@@ -23,14 +23,37 @@ import Item from './item.vue'
 import Tabs from './tabs.vue'
 let id = 0
 export default {
-  data () {
-    return {
-      todos: [],
-      filter: 'all'
+  // 不！能！获取组件实例 `this`
+  // 因为当守卫执行前，组件实例还没被创建
+  // 你可以通过传一个回调给 next来访问组件实例。在导航被确认的时候执行回调，并且把组件实例作为回调方法的参数。
+  beforeRouteEnter(to, from, next) {
+    console.log('todo beforeRouteEnter')
+    next(vm => {
+      console.log('after enter this.id is ', vm.name)
+    })
+  },
+  // 在当前路由改变，但是该组件被复用时调用 举例来说，对于一个带有动态参数的路径 /foo/:id，在 /foo/1 和 /foo/2 之间跳转的时候，同时这样的跳转
+  // 不会触发monuted函数
+  beforeRouteUpdate(to, from, next) {
+    console.log('todo beforeRouteUpdate')
+    next()
+  },
+  beforeRouteLeave(to, from, next) {
+    console.log('todo beforeRouteLeave')
+    if (global.confirm('are you sure?')) {
+      next()
     }
   },
+  data() {
+    return {
+      todos: [],
+      filter: 'all',
+      name: 'todoList'
+    }
+  },
+  props: ['id'],
   computed: {
-    filteredTodos () {
+    filteredTodos() {
       if (this.filter === 'all') {
         return this.todos
       }
@@ -39,7 +62,7 @@ export default {
     }
   },
   methods: {
-    addTodo (e) {
+    addTodo(e) {
       // e是event对象  unshift插入到第一项
       this.todos.unshift({
         id: id++,
@@ -48,19 +71,22 @@ export default {
       })
       e.target.value = ''
     },
-    deleteTodo (id) {
+    deleteTodo(id) {
       this.todos.splice(this.todos.findIndex(todo => todo.id === id), 1)
     },
-    toggleFilter (state) {
+    toggleFilter(state) {
       this.filter = state
     },
-    clearAllCompleted () {
+    clearAllCompleted() {
       this.todos = this.todos.filter(todo => !todo.completed)
     }
   },
   components: {
     Item,
     Tabs
+  },
+  mounted() {
+    console.log(this.id)
   }
 }
 </script>
