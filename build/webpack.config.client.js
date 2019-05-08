@@ -6,8 +6,8 @@ const webpack = require('webpack')
 const merge = require('webpack-merge')
 // 非JavaScript代码的东西打包成一个单独的文件
 const ExtractPlugin = require('extract-text-webpack-plugin')
-
 const baseConfig = require('./webpack.config.base')
+const VueClientPulugin = require('vue-server-renderer/client-plugin')
 const isDev = process.env.NODE_ENV === 'development'
 
 const defaultPlugins = [
@@ -19,12 +19,14 @@ const defaultPlugins = [
   }),
   new HTMLPlugin({
     template: path.join(__dirname, 'template.html')
-  })
+  }),
+  // 会自动生成一个默认的文件名vue-ssr-client-manifest.json
+  new VueClientPulugin()
 ]
 
 let config
 const devServer = {
-  port: 9090,
+  port: 8000,
   // host使用0.0.0.0可以使同一个局域网里的其他机器通过ip地址访问到
   host: 'localhost',
   // webpack编译时显示到网页上

@@ -17,6 +17,22 @@ store.registerModule('c', {
     text: 3
   }
 })
+// 解绑一个module
+store.unregisterModule('c')
+// 第二个方法在第一个方法的返回值有变化时会调用
+// store.watch((state) => state.count + 1, (newCount) => {
+//   console.log('new Count watched:', newCount)
+// })
+// 可以知道调用了哪个mutation，payload为调用时使用的参数
+// store.subscribe((mutation, state) => {
+//   console.log(mutation.type)
+//   console.log(mutation.payload)
+// })
+
+store.subscribeAction((action, state) => {
+  console.log(action.type)
+  console.log(action.payload)
+})
 
 // 导航守卫注册  在每次导航跳转前会执行这个函数，必须在里面使用了next才能跳转。可以在里面进行一些数据的校验
 router.beforeEach((to, from, next) => {

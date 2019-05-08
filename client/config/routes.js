@@ -8,7 +8,8 @@ export default [
   {
   // 路由上可以带上参数 :id。后面的内容会作为id传到组件。能放到这个对应的component中使用。props配置为true时，会把id作为参数传递给组件
   // props还可以设置为对象、方法
-    path: '/app/:id',
+    // path: '/app/:id',
+    path: '/app',
     props: true,
     // components: {
     //   default: Todo,

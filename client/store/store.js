@@ -17,7 +17,13 @@ export default () => {
     state: defaultState,
     mutations,
     getters,
-    actions
+    actions,
+    // 在vue初始化时就会调用这个plugin，可以通过subscribe，watch进行一些操作
+    plugins: [
+      (store) => {
+        console.log('my plugin')
+      }
+    ]
     // modules: {
     //   a: {
     //     // namespaced为true后，调用mutations的方法也必须加上a
