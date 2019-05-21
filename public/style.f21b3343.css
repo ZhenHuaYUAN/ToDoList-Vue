@@ -1,0 +1,32 @@
+#app[data-v-1325a9c4],#cover[data-v-1325a9c4]{position:absolute;left:0;right:0;top:0;bottom:0}#cover[data-v-1325a9c4]{background-color:#999;opacity:.9;z-index:-1}._34DKf_0[data-v-2f127be2]{text-align:center}h1[data-v-2f127be2]{font-size:100px;color:rgba(175,47,47,.8);font-weight:100;margin:20px}#footer {
+  margin-top: 40px;
+  text-align: center;
+  color: #bfbfbf;
+  font-size: 10px;
+  text-shadow: 0 1px rgba(255,255,255,0.5);
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+body {
+  background-image: url(/public/resoureces/client/assets/images/bg.d83e8d6e.jpg);
+  background-size: cover;
+  background-position: center;
+  font: 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: #4d4d4d;
+  font-smoothing: antialiased;
+  font-weight: 300;
+}
+.fade-enter-active,
+.fade-leave-active {
+  -webkit-transition: opacity 0.5s;
+  transition: opacity 0.5s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}

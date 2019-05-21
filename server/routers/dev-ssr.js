@@ -1,60 +1,75 @@
 /* eslint-disable no-unused-vars */
+// 处理开发环境的服务端渲染
 const Router = require('koa-router')
 const axios = require('axios')
-// 文件系统，但不把文件写入磁盘。直接写到内存里面
-const MemoryFs = require('memory-fs')
-const fs = require('fs')
 const path = require('path')
+const fs = require('fs')
+// 和fs的区别是不把文件写入到磁盘上面
+const MemoryFs = require('memory-fs')
 const webpack = require('webpack')
-const VueServerRenderer = require('vue-server-renderer')
+const VueServerRender = require('vue-server-renderer')
 
 const serverRender = require('./server-render')
 const serverConfig = require('../../build/webpack.config.server')
-const serverComplier = webpack(serverConfig)
+
+// 编译webpack
+const serverCompiler = webpack(serverConfig)
 const mfs = new MemoryFs()
-// 指定输出目录在内存里
-serverComplier.outputFileSystem = mfs
-// webpack每次打包生成的新的文件
+// 指定webpack的编译的输出目录是在内存里
+serverCompiler.outputFileSystem = mfs
+
+// 记录webpack每次打包生成的新的文件
 let bundle
-serverComplier.watch({}, (err, stats) => {
-  if (err) throw err
+serverCompiler.watch({}, (err, stats) => {
+  // 打包的报错直接抛出异常
+  if (err) {
+    throw err
+  }
   stats = stats.toJson()
-  // 不是导致webpack报错的错误
-  stats.errors.forEach(error => {
-    console.log(error)
+  // 其他的错误 比如eslint
+  stats.errors.forEach(err => {
+    console.log(err)
   })
   stats.warnings.forEach(warn => {
-    console.log(warn)
+    console.warn(warn)
   })
-
-  const bundlePath = path.join(serverConfig.output.path, 'vue-ssr-server-bundle.json')
+  // 读取生成的bundle文件,生成的目录根据webpack.config.server中指定的
+  const bundlePath = path.join(
+    serverConfig.output.path,
+    // VueServerPlugin打包生成的json文件名
+    'vue-ssr-server-bundle.json'
+  )
   bundle = JSON.parse(mfs.readFileSync(bundlePath, 'utf-8'))
+  // webpack打包时打印
   console.log('new bundle generated')
 })
 
-// 处理服务端渲染返回的东西
+// koa中间件 处理服务端渲染返回的东西
 const handleSSR = async (ctx) => {
-  // 服务刚启动时webpack可能还没有打包好。
+  // 判断bundle是否存在。使用server.template.ejs模板
   if (!bundle) {
-    ctx.body = 'loading'
+    ctx.body = '等一会儿'
     return
   }
-  // 获取客户端生成的js的路径
-  const clientManifesstRest = await axios.get(
+
+  const clientManifestResp = await axios.get(
     'http://127.0.0.1:8000/vue-ssr-client-manifest.json'
   )
-  // 自动生成一个带有js标签的引用
-  const clientManifest = clientManifesstRest.data
+
+  const clientManifest = clientManifestResp.data
+
+  // 服务端渲染的过程。vue-server-render输出的是body里的html代码.
+  // 读取模板的内容
   const template = fs.readFileSync(path.join(__dirname, '../server.template.ejs'), 'utf-8')
-  // 使用 server bundle 和（可选的）选项创建一个 BundleRenderer 实例。
-  const renderer = VueServerRenderer.createBundleRenderer(bundle, {
+  // 声明render （渲染） 会生成一个可以直接调用render的一个方法
+  const renderer = VueServerRender.createBundleRenderer(bundle, {
     inject: false,
     clientManifest
   })
-
   await serverRender(ctx, renderer, template)
 }
 
 const router = new Router()
 router.get('*', handleSSR)
+
 module.exports = router

@@ -1,25 +1,28 @@
 const ejs = require('ejs')
 
-// render 开发时和生产环境不一样，要从外部传入
-module.exports = async (ctx, render, template) => {
+module.exports = async (ctx, renderer, template) => {
   ctx.headers['Content-Type'] = 'text/html'
+
   const context = {
     url: ctx.path
   }
+  console.log(context)
 
   try {
-    const appString = await render.renderToString(context)
-    // 渲染html
+    const appString = await renderer.renderToString(context)
+    // 拿到meta信息
+    const {
+      title
+    } = context.meta.inject()
     const html = ejs.render(template, {
       appString,
-      // 拿到带有style标签的整个字符串
       style: context.renderStyles(),
-      // 拿到带有script标签的整个字符串
-      scripts: context.renderScripts()
+      scripts: context.renderScripts(),
+      title: title.text()
     })
     ctx.body = html
-  } catch (error) {
-    console.log('render error ', error)
-    throw error
+  } catch (err) {
+    console.log('render error', err)
+    throw err
   }
 }

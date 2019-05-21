@@ -7,7 +7,7 @@ const merge = require('webpack-merge')
 // 非JavaScript代码的东西打包成一个单独的文件
 const ExtractPlugin = require('extract-text-webpack-plugin')
 const baseConfig = require('./webpack.config.base')
-const VueClientPulugin = require('vue-server-renderer/client-plugin')
+const VueClientPlugin = require('vue-server-renderer/client-plugin')
 const isDev = process.env.NODE_ENV === 'development'
 
 const defaultPlugins = [
@@ -21,7 +21,7 @@ const defaultPlugins = [
     template: path.join(__dirname, 'template.html')
   }),
   // 会自动生成一个默认的文件名vue-ssr-client-manifest.json
-  new VueClientPulugin()
+  new VueClientPlugin()
 ]
 
 let config
@@ -73,11 +73,12 @@ if (isDev) {
 } else {
   config = merge(baseConfig, {
     entry: {
-      app: path.join(__dirname, '../client/index.js'),
+      app: path.join(__dirname, '../client/client-entry.js'),
       vendor: ['vue']
     },
     output: {
-      filename: '[name].[chunkhash:8].js'
+      filename: '[name].[chunkhash:8].js',
+      publicPath: '/public/'
     },
     module: {
       rules: [{

@@ -26,6 +26,9 @@ import Header from './views/layout/header.vue'
 import Footer from './views/layout/footer.jsx'
 // import Todo from './views/todo/todo.vue'
 export default {
+  metaInfo: {
+    title: "Panda's Todo App"
+  },
   components: {
     Header,
     Footer

@@ -23,6 +23,9 @@ import Item from './item.vue'
 import Tabs from './tabs.vue'
 let id = 0
 export default {
+  metaInfo: {
+    title: 'The Todo App'
+  },
   // 不！能！获取组件实例 `this`
   // 因为当守卫执行前，组件实例还没被创建
   // 你可以通过传一个回调给 next来访问组件实例。在导航被确认的时候执行回调，并且把组件实例作为回调方法的参数。
