@@ -1,5 +1,20 @@
 <template>
   <section class="real-app">
+   <div class="tab-container">
+    <tabs :value='filter' @change="handleChangeTab">
+      <!-- <tab label='tab1' index='1'>
+        <span>tab content 1 {{inputContent}}</span>
+      </tab>
+      <tab index='2'>
+        <span slot='label' style="color:red">tab2</span>
+        <span>tab content 2</span>
+      </tab>
+      <tab label='tab3' index='3'>
+        <span>tab content 3</span>
+      </tab> -->
+      <tab v-for="tab in states" :key="tab" :index="tab" :label="tab"></tab>
+    </tabs>
+   </div>
     <!-- .enter 按下enter键 -->
     <input
       type="text"
@@ -9,18 +24,17 @@
       @keyup.enter="addTodo"
     >
     <item :todo="todo" v-for="todo in filteredTodos" :key="todo.id" @del="deleteTodo"/>
-    <tabs
+    <Helper
       :filter="filter"
       :todos="todos"
-      @toggle="toggleFilter"
       @clearAllCompleted="clearAllCompleted"
-    ></tabs>
+    ></Helper>
   </section>
 </template>
 
 <script>
 import Item from './item.vue'
-import Tabs from './tabs.vue'
+import Helper from './helper.vue'
 let id = 0
 export default {
   metaInfo: {
@@ -51,7 +65,8 @@ export default {
     return {
       todos: [],
       filter: 'all',
-      name: 'todoList'
+      name: 'todoList',
+      states: ['all', 'active', 'completed']
     }
   },
   props: ['id'],
@@ -77,19 +92,22 @@ export default {
     deleteTodo(id) {
       this.todos.splice(this.todos.findIndex(todo => todo.id === id), 1)
     },
-    toggleFilter(state) {
-      this.filter = state
-    },
     clearAllCompleted() {
       this.todos = this.todos.filter(todo => !todo.completed)
+    },
+    handleChangeTab (value) {
+      this.filter = value
     }
   },
   components: {
     Item,
-    Tabs
+    Helper
   },
   mounted() {
     console.log(this.id)
+    // setTimeout(() => {
+    //   this.tabValue = '2'
+    // }, 2000)
   }
 }
 </script>
@@ -118,5 +136,8 @@ export default {
   border: none;
   box-shadow: inset 0 -2px 1px rgba(0, 0, 0, 0.03);
 }
+.tab-container
+  background-color #ffffff
+  padding 0 15px
 </style>
 

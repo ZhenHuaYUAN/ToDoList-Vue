@@ -33,6 +33,9 @@ const devServer = {
   overlay: {
     errors: true
   },
+  headers: {
+    'Access-Control-Allow-Orign': '*'
+  },
   // 自动打开浏览器
   open: true,
   historyApiFallback: {

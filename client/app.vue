@@ -2,14 +2,17 @@
   <div id="app">
     <div id="cover"></div>
     <Header></Header>
-    <p>{{fullName}}</p>
-    <router-link to="/app/123">app123</router-link>
-    <router-link to="/login">login</router-link>
+    <p>{{fullName}}2322</p>
+    <!-- <router-link to="/app/123">app123</router-link>
+    <router-link to="/login">login</router-link>-->
     <!-- <todo></todo> -->
+
     <!-- vue-router内置的组件 -->
     <transition name="fade">
       <router-view></router-view>
     </transition>
+    <button @click="notify">show</button>
+    <!-- <notification content='test notify'/> -->
     <Footer></Footer>
   </div>
 </template>
@@ -35,12 +38,18 @@ export default {
     // Todo
   },
   methods: {
+    notify() {
+      this.$notify({
+        content: 'test $notify',
+        btn: 'close'
+      })
+    },
     // 'a/add'  'a/updateText'
     ...mapActions(['updateCountASync']),
     ...mapMutations(['updateCount'])
   },
   mounted() {
-    console.log(this.$store)
+    // console.log(this.$store)
     // let i = 1
     // setInterval(() => {
     //   this.$store.commit('updateCount', {
@@ -53,10 +62,10 @@ export default {
     //   num: 5,
     //   time: 2000
     // })
-    this.updateCountASync({
-      num: 5,
-      time: 2000
-    })
+    // this.updateCountASync({
+    //   num: 5,
+    //   time: 2000
+    // })
     // this['a/updateText']('123')
     // this['a/add']()
   },
